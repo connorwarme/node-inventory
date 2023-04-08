@@ -1,3 +1,5 @@
+require('dotenv').config();
+console.log(process.env);
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -13,7 +15,7 @@ const app = express();
 const mongoose = require("mongoose");
 mongoose.set('strictQuery', false);
 // define db url to connect to
-const mongoDB = "mongodb://127.0.0.1/my_database";
+const mongoDB = process.env.MDBURL;
 // await connection, if error -> log it
 const main = async () => await mongoose.connect(mongoDB);
 main().catch(err => console.log(err));
