@@ -117,7 +117,10 @@ async function createGoggles() {
     goggleCreate("Stomp", "", 65, brands[0], categories[0], false),
     goggleCreate("Daredevil", "", 50, brands[2], categories[0], false),
     goggleCreate("Showcase", "", 120, brands[2], categories[1], [tags[2]]),
-    goggleCreate("4D MAG", "", 320, brands[2], createCategories[2], [tags[0], tags[1], tags[2]])
+    goggleCreate("4D MAG", "", 320, brands[2], createCategories[2], [tags[0], tags[1], tags[2]]),
+    goggleCreate("Flight Path", "", 227, brands[1], categories[3], [tags[2], tags[3]]),
+    goggleCreate("Fall Line", "", 216, brands[1], categories[2], [tags[0], tags[2]]),
+    goggleCreate("Line Miner", "", 161, brands[1], categories[2], [tags[2], tags[3]]),
   ])
 }
 async function createGoggleInstances() {
@@ -141,6 +144,14 @@ async function createGoggleInstances() {
     goggleInstanceCreate(goggles[5], {style: "Everyday Red and Storm Yellow", details: "With two lenses included, you're covered for mixed sun/cloud conditions along with overcast/stormy conditions"}, 48),
     goggleInstanceCreate(goggles[5], {style: "Sun Black and Blue Sensor Mirror", details: "With two lenses included, you're covered for full sun conditions along with overcast/stormy conditions"}, 37),
     goggleInstanceCreate(goggles[5], {style: "Red Mirror and Storm Rose Flash", details: "With two lenses included, you're covered for mixed sun/cloud conditions along with overcast/stormy conditions"}, 59),
-
+    goggleInstanceCreate(goggles[6], {style: "Sapphire Iridium", details: "Optimal in sunny and mixed sun/cloud conditions"}, 71),
+    goggleInstanceCreate(goggles[6], {style: "Torch Iridium", details: "Optimal in sunny and mixed sun/cloud conditions"}, 61),
+    goggleInstanceCreate(goggles[6], {style: "Hi Pink Iridium", details: "Optimal in mostly cloudy and overcast/stormy conditions"}, 21),
+    goggleInstanceCreate(goggles[7], {style: "Black Iridium", details: "Optimal in full sun and mixed sun/cloud conditions"}, 43),
+    goggleInstanceCreate(goggles[7], {style: "Rose", details: "Optimal in mixed sun/cloud and overcast/stormy conditions"}, 63),
+    goggleInstanceCreate(goggles[7], {style: "Jade Iridium", details: "Optimal in sunny and mixed sun/cloud conditions"}, 18),
+    goggleInstanceCreate(goggles[8], {style: "Persimmon", details: "Optimal in overcast/stormy conditions"}, 64),
+    goggleInstanceCreate(goggles[8], {style: "Sapphire Iridium", details: "Optimal in sunny and mixed sun/cloud conditions"}, 47),
+    goggleInstanceCreate(goggles[8], {style: "Gold Iridium", details: "Optimal in sunny and mixed sun/cloud conditions"}, 32),
   ])
 }
