@@ -82,4 +82,52 @@ async function goggleInstanceCreate(goggle, lens, quantity) {
   goggleinstances.push(goggleInstance)
   console.log(`Added goggle instance: ${lens.style}`)
 }
-
+async function createTags() {
+  console.log("Adding tags")
+  await Promise.all([
+    tagCreate("Frameless"),
+    tagCreate("Magnetic Lens"),
+    tagCreate("HD Tech"),
+    tagCreate("Responsive Fit")
+  ])
+}
+async function createBrands() {
+  console.log('Adding brands')
+  await Promise.all([
+    brandCreate("Giro"),
+    brandCreate("Oakley"),
+    brandCreate("Smith")
+  ])
+}
+async function createCategories() {
+  console.log("Adding categories")
+  await Promise.all([
+    categoryCreate("Youth"),
+    categoryCreate("Slim"),
+    categoryCreate("Medium"),
+    categoryCreate("Wide")
+  ])
+}
+async function createGoggles() {
+  console.log("Adding goggles")
+  await Promise.all([
+    // needs content
+    goggleCreate("Contact", "", 260, brands[0], categories[3], [tags[0], tags[1], tags[2]]),
+    goggleCreate("Contour RS", "", 270, brands[0], categories[2], [tags[0], tags[1], tags[2]]),
+    goggleCreate("Stomp", "", 65, brands[0], categories[0], false)
+  ])
+}
+async function createGoggleInstances() {
+  console.log("Adding goggle instances")
+  await Promise.all([
+    goggleInstanceCreate(goggles[0], {style: "Vivid Ember and Vivid Infared", details: "With two lenses included, you're covered for mixed sun/cloud conditions along with overcast/storm conditions"}, 42),
+    goggleInstanceCreate(goggles[0], {style: "Vivid Pink and Vivid Apex", details: "With two lenses included, you're covered for mixed sun/cloud conditions along with overcast/storm conditions"}, 27),
+    goggleInstanceCreate(goggles[0], {style: "Vivid Smoke and Vivid Infared", details: "With two lenses included, you're covered for full sun conditions along with overcast/storm conditions"}, 19),
+    goggleInstanceCreate(goggles[1], {style: "Vivid Royal and Vivid Infared", details: "With two lenses included, you're covered for mixed sun/cloud conditions along with overcast/storm conditions"}, 38),
+    goggleInstanceCreate(goggles[1], {style: "Vivid Onyx and Vivid Infared", details: "With two lenses included, you're covered for full sun conditions along with overcast/storm conditions"}, 22),
+    goggleInstanceCreate(goggles[1], {style: "Vivid Emerald and Vivid Apex", details: "With two lenses included, you're covered for mixed sun/cloud conditions along with overcast/storm conditions"}, 26),
+    goggleInstanceCreate(goggles[2], {style: "Grey Cobalt", details: "Optimal for mixed sun/cloud conditions"}, 12),
+    goggleInstanceCreate(goggles[2], {style: "Amber Rose", details: "Optimal for overcast/stormy conditions"}, 16),
+    goggleInstanceCreate(goggles[2], {style: "Amber Scarlet", details: "Optimal for mixed sun/cloud and mostly cloudy conditions"}, 31),
+  ])
+}
