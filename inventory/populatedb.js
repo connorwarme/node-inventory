@@ -114,7 +114,10 @@ async function createGoggles() {
     // needs content
     goggleCreate("Contact", "", 260, brands[0], categories[3], [tags[0], tags[1], tags[2]]),
     goggleCreate("Contour RS", "", 270, brands[0], categories[2], [tags[0], tags[1], tags[2]]),
-    goggleCreate("Stomp", "", 65, brands[0], categories[0], false)
+    goggleCreate("Stomp", "", 65, brands[0], categories[0], false),
+    goggleCreate("Daredevil", "", 50, brands[2], categories[0], false),
+    goggleCreate("Showcase", "", 120, brands[2], categories[1], [tags[2]]),
+    goggleCreate("4D MAG", "", 320, brands[2], createCategories[2], [tags[0], tags[1], tags[2]])
   ])
 }
 async function createGoggleInstances() {
@@ -129,5 +132,15 @@ async function createGoggleInstances() {
     goggleInstanceCreate(goggles[2], {style: "Grey Cobalt", details: "Optimal for mixed sun/cloud conditions"}, 12),
     goggleInstanceCreate(goggles[2], {style: "Amber Rose", details: "Optimal for overcast/stormy conditions"}, 16),
     goggleInstanceCreate(goggles[2], {style: "Amber Scarlet", details: "Optimal for mixed sun/cloud and mostly cloudy conditions"}, 31),
+    goggleInstanceCreate(goggles[3], {style: "Ignitor Mirror", details: "Optimal in mixed sun/cloud and mostly sunny conditions"}, 24),
+    goggleInstanceCreate(goggles[3], {style: "Blue Sensor Mirror", details: "Optimal in mostly cloudy and overcast/stormy conditions"}, 38),
+    goggleInstanceCreate(goggles[3], {style: "Clear", details: "Optimal in overcast/stormy conditions"}, 13),
+    goggleInstanceCreate(goggles[4], {style: "Rose Gold", details: "Optimal in mixed sun/cloud and mostly cloudy conditions"}, 64),
+    goggleInstanceCreate(goggles[4], {style: "Everyday Green", details: "Optimal in mixed sun/cloud conditions"}, 42),
+    goggleInstanceCreate(goggles[4], {style: "Storm Rose", details: "Optimal in mostly cloudy and overcast/stormy conditions"}, 51),
+    goggleInstanceCreate(goggles[5], {style: "Everyday Red and Storm Yellow", details: "With two lenses included, you're covered for mixed sun/cloud conditions along with overcast/stormy conditions"}, 48),
+    goggleInstanceCreate(goggles[5], {style: "Sun Black and Blue Sensor Mirror", details: "With two lenses included, you're covered for full sun conditions along with overcast/stormy conditions"}, 37),
+    goggleInstanceCreate(goggles[5], {style: "Red Mirror and Storm Rose Flash", details: "With two lenses included, you're covered for mixed sun/cloud conditions along with overcast/stormy conditions"}, 59),
+
   ])
 }
