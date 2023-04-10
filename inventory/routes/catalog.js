@@ -8,3 +8,7 @@ const goggle_controller = require("../controllers/goggleController")
 const goggleinstance_controller = require("../controllers/goggleInstanceController")
 const tag_controller = require("../controllers/tagController")
 
+// goggle routes
+
+// GET catalog home page
+router.get("/", goggle_controller.index);
