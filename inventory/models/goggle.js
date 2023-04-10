@@ -14,7 +14,7 @@ const GoggleSchema = new Schema({
   },
   cost: {
     type: Number,
-    min: 75,
+    min: 50,
     max: 325,
     required: true,
   },
