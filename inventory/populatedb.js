@@ -4,9 +4,6 @@ console.log(process.env);
 
 console.log(`populates the database provided...`)
 
-// get arguments passed on command line
-const userArgs = process.argv.slice(2);
-
 const Goggle = require("./models/goggle")
 const Brand = require("./models/brand")
 const Category = require("./models/category")
@@ -111,7 +108,6 @@ async function createCategories() {
 async function createGoggles() {
   console.log("Adding goggles")
   await Promise.all([
-    // needs content
     goggleCreate("Contact", "The breakthrough design of the Contact™ goggle makes it easy to adapt instantly to changing weather and light conditions. The Snapshot Magnetic Lens Interchange System sets a standard in fast, accurate and secure lens interchange by utilizing a shutter button-release and locking mechanism. Meanwhile, self-locating magnets guide and hold the lens securely into place in this sleek, semi- frameless design. The Contact goggle also offers an outstanding field of view and includes two premium VIVID lenses with Optics by ZEISS®.", 260, brands[0], categories[3], [tags[0], tags[1], tags[2]]),
     goggleCreate("Contour RS", "With a new toric lens shape that's slightly smaller than the original Contour, the Contour RS goggle hits all the marks. The new shape, combined with Expansion View Technology+ and VIVID lenses, allows you to see all the features on the mountain with clarity, so you can spot takeoffs and landings with ease, while the quick-change magnetic-assisted lens system means more time riding and less time fussing with gear. Top that off with the EVAK vent system so you don't have to worry about fogging, and a bonus low-light VIVID infrared lens with Optics by ZEISS®, and you're more than ready to shred in all conditions.", 270, brands[0], categories[2], [tags[0], tags[1], tags[2]]),
     goggleCreate("Stomp", "The new Stomp™ youth goggle is ready for pre-teens who are ready to spot and stomp their first landings with optimal vision and style. With a large-size youth frame, the kids (who aren't kids anymore, wink wink) can enjoy a fit that's made for them with unparalleled vision, thanks to its Expansion View Technology. Vision stays totally clear with the anti-fog coating while all-day riding comfort is on-point with the Stomp's triple-layer face foam with soft microfleece that nests next to skin.", 65, brands[0], categories[0], false),
