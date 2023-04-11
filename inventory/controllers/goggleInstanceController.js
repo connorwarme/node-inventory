@@ -1,8 +1,19 @@
 const GoggleInstance = require("../models/goggleinstance")
 
 // display all goggleinstances
-exports.goggleinstance_list = (req, res) => {
-  res.send("Not Implemented Yet: goggleinstance list");
+exports.goggleinstance_list = (req, res, next) => {
+  GoggleInstance.find()
+    .populate("goggle")
+    .sort({ goggle: 1 })
+    .exec(function(err, list_goggleinstances) {
+      if (err) {
+        return next(err)
+      }
+      res.render("goggleinstance_list", {
+        title: "Goggle + Lens Combinations",
+        goggleinstance_list: list_goggleinstances,
+      })
+    })
 }
 
 // display detail page for specific goggleinstance

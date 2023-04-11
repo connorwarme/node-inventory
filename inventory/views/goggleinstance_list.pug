@@ -1,0 +1,14 @@
+extends layout 
+
+block content 
+  h1= title 
+
+  ul 
+    each instance in goggleinstance_list 
+      li 
+        a(href=instance.url) #{instance.goggle.name} 
+        | + #{instance.lens.style} 
+
+    else 
+      li There are no available goggle + lens combinations.
+
