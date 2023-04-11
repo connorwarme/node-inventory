@@ -1,0 +1,12 @@
+extends layout 
+
+block content 
+  h1= title 
+
+  ul 
+    each category in category_list 
+      li 
+        a(href=category.url) #{category.title} 
+    
+    else 
+      li There was an error retrieving the category list from the database.
