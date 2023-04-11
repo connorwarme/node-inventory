@@ -15,4 +15,5 @@ a {
 .sidebar-nav {
   margin-top: 20px;
   list-style: none;
+  min-width: 150px;
 }

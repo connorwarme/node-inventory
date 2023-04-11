@@ -2,4 +2,18 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p Welcome to #[em the Goggle superstore]! We're here to provide the largest collection of goggles available so that you can find the best product for you. Hope to see you shreddin' out on the slopes!
+
+  h1 Dynamic content 
+
+  if error 
+    p Error getting dynamic content.
+  else
+    p Our Goggle warehouse has the following: 
+
+    ul 
+      li #[strong Goggles:] !{data.goggle_count}
+      li #[strong Goggle + Lens Combinations:] !{data.goggle_instance_count}
+      li #[strong Brands:] !{data.brand_count}
+      li #[strong Categories:] !{data.category_count}
+      li #[strong Tags:] !{data.tag_count}

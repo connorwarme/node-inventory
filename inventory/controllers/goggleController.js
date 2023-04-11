@@ -1,8 +1,39 @@
 const Goggle = require("../models/goggle")
+const Brand = require("../models/brand")
+const Category = require("../models/category")
+const Tag = require("../models/tag")
+const GoggleInstance = require("../models/goggleinstance")
+
+const async = require("async")
 
 // site home page
 exports.index = (req, res) => {
-  res.send("Not Implemented Yet: home page")
+  async.parallel(
+    {
+      goggle_count(callback) {
+        Goggle.countDocuments({}, callback)
+      },
+      goggle_instance_count(callback) {
+        GoggleInstance.countDocuments({ quantity: { $gt: 0 } }, callback)
+      },
+      brand_count(callback) {
+        Brand.countDocuments({}, callback)
+      },
+      category_count(callback) {
+        Category.countDocuments({}, callback)
+      },
+      tag_count(callback) {
+        Tag.countDocuments({}, callback)
+      },
+    },
+    (err, results) => {
+      res.render("index", {
+        title: "Google at Goggles",
+        error: err,
+        data: results,
+      })
+    }
+  )
 }
 
 // display all categories
