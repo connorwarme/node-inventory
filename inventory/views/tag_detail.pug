@@ -1,0 +1,18 @@
+extends layout 
+
+block content 
+  h1 Tag: #{tag.name} 
+
+  div.detail-container 
+    h4 Goggles 
+
+    dl 
+      each goggle in tag_goggles 
+        dt 
+          a(href=goggle.url) #{goggle.name}  
+          | //  #{goggle.brand.name}
+        dd #{goggle.description} 
+      
+      else 
+        p This tag has no goggles.
+

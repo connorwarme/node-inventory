@@ -1,4 +1,6 @@
 const Tag = require("../models/tag")
+const Goggle = require("../models/goggle")
+const async = require("async")
 
 // display all tags
 exports.tag_list = (req, res, next) => {
@@ -16,8 +18,34 @@ exports.tag_list = (req, res, next) => {
 }
 
 // display detail page for specific tag
-exports.tag_detail = (req, res) => {
-  res.send(`Not Implemented Yet: tag detail: ${req.params.id}`);
+exports.tag_detail = (req, res, next) => {
+  async.parallel(
+    {
+      tag(callback) {
+        Tag.findById(req.params.id).exec(callback)
+      },
+      tag_goggles(callback) {
+        Goggle.find({ tag: req.params.id })
+          .populate("brand")
+          .exec(callback)
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      if (results.tag == null) {
+        const err = new Error("Tag not found!")
+        err.status = 404
+        return next(err)
+      }
+      res.render("tag_detail", {
+        title: "Tag Detail",
+        tag: results.tag,
+        tag_goggles: results.tag_goggles,
+      })
+    }
+  )
 }
 
 // display tag create form on GET
