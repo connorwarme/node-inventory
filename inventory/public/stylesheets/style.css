@@ -13,7 +13,10 @@ a {
 }
 
 .sidebar-nav {
-  margin-top: 20px;
+  margin: 20px 0 0 0;
   list-style: none;
   min-width: 150px;
+}
+hr {
+  width: 65%;
 }
