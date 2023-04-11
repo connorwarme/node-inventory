@@ -37,8 +37,16 @@ exports.index = (req, res) => {
 }
 
 // display all categories
-exports.goggle_list = (req, res) => {
-  res.send("Not Implemented Yet: goggle list");
+exports.goggle_list = (req, res, next) => {
+  Goggle.find({}, "name brand")
+    .sort({ name: 1 })
+    .populate("brand")
+    .exec(function(err, list_goggles) {
+      if (err) {
+        return next(err)
+      }
+      res.render("goggle_list", { title: "Goggle List", goggle_list: list_goggles})
+    })
 }
 
 // display detail page for specific goggle

@@ -1,0 +1,12 @@
+extends layout 
+
+block content 
+  h1= title 
+
+  ul 
+    each goggle in goggle_list 
+      li 
+        a(href=goggle.url) #{goggle.name} 
+        | - #{goggle.brand.name}
+    else 
+      li There are no goggles :/
