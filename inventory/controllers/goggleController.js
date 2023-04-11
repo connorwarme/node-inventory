@@ -50,8 +50,37 @@ exports.goggle_list = (req, res, next) => {
 }
 
 // display detail page for specific goggle
-exports.goggle_detail = (req, res) => {
-  res.send(`Not Implemented Yet: goggle detail: ${req.params.id}`);
+exports.goggle_detail = (req, res, next) => {
+  async.parallel(
+    {
+      goggle(callback) {
+        Goggle.findById(req.params.id) 
+          .populate("brand")
+          .populate("category")
+          .populate("tag")
+          .exec(callback)
+      },
+      goggle_instance(callback) {
+        GoggleInstance.find({ goggle: req.params.id })
+          .exec(callback)
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err)
+      }
+      if (results.goggle == null) {
+        const error = new Error("Goggle not found!")
+        error.status = 404
+        return next(error)
+      }
+      res.render("goggle_detail", {
+        title: results.goggle.name,
+        goggle: results.goggle,
+        goggle_instances: results.goggle_instance,
+      })
+    }
+  )
 }
 
 // display goggle create form on GET
