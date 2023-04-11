@@ -1,8 +1,18 @@
 const Tag = require("../models/tag")
 
 // display all tags
-exports.tag_list = (req, res) => {
-  res.send("Not Implemented Yet: tag list");
+exports.tag_list = (req, res, next) => {
+  Tag.find() 
+    .sort({ name: 1 })
+    .exec(function(err, list_tags) {
+      if (err) {
+        return next(err)
+      }
+      res.render("tag_list", {
+        title: 'Tag List',
+        tag_list: list_tags,
+      })
+    })
 }
 
 // display detail page for specific tag
