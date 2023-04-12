@@ -20,3 +20,9 @@ a {
 hr {
   width: 65%;
 }
+.detail_instance_list > dt {
+  margin: 10px 0 0 20px;
+}
+.detail_instance_list > dd {
+  margin: 0 0 0 40px;
+}

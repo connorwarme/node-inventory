@@ -7,4 +7,33 @@ block content
 
   p= goggle.description 
 
-  p #[em Cost: ] <h4>#{goggle.cost}</h4
+  p #[em $#{goggle.cost}]
+
+  p Category: 
+    a(href=goggle.category.url) #{goggle.category.title}
+
+  if goggle.tag.length > 1
+    p Tags: 
+      each tag, index in goggle.tag 
+        a(href=tag.url) #{tag.name}
+        if index < goggle.tag.length - 1
+          |, 
+  else if goggle.tag.length > 0
+    p Tag: 
+      each tag in goggle.tag 
+        a(href=tag.url) #{tag.name}
+  else 
+    p
+
+
+  if goggle_instances 
+    h5 Lens Options:     
+    dl.detail_instance_list 
+      each instance in goggle_instances 
+        dt #{goggle.name}  
+          | //  
+          a(href=instance.url) #{instance.lens.style}
+        dd #{instance.lens.detail} 
+        
+      else 
+          p
