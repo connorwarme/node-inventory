@@ -1,6 +1,7 @@
 const Brand = require("../models/brand")
 const Goggle = require("../models/goggle")
 const async = require("async")
+const { body, validationResult } = require("express-validator")
 
 // display all brands
 exports.brand_list = (req, res, next) => {
@@ -50,14 +51,47 @@ exports.brand_detail = (req, res, next) => {
 }
 
 // display brand create form on GET
-exports.brand_create_get = (req, res) => {
-  res.send("Not Implemented Yet: brand create GET");
+exports.brand_create_get = (req, res, next) => {
+  res.render("brand_form", { title: "Create Brand" })
 }
 
 // handle brand create on POST
-exports.brand_create_post = (req, res) => {
-  res.send("Not Implemented Yet: brand create POST");
-}
+exports.brand_create_post = [
+  body("name")
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage("Brand name must be specified"),
+  (req, res, next) => {
+    const errors = validationResult(req)
+    const brand = new Brand({ name: req.body.name })
+
+    if (!errors.isEmpty()) {
+      res.render("brand_form", {
+        title: "Create Brand",
+        brand: req.body,
+        errors: errors.array(),
+      })
+      return;
+    } else {
+      Brand.find({ name: req.body.name })
+        .exec(err, found_brand)
+      if (err) {
+        return next(err)
+      }
+      if (found_brand) {
+        res.redirect(found_brand.url)
+      } else {
+        brand.save((err) => {
+          if (err) {
+            return next(err)
+          }
+          res.redirect(brand.url)
+        })
+      }
+    }
+  }
+]
 
 // display brand delete form on GET
 exports.brand_delete_get = (req, res) => {
