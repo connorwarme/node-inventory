@@ -1,0 +1,18 @@
+extends layout 
+
+block content 
+  h1 Brand: #{title}
+
+  dl.brand-goggle-list
+    if goggles
+      h4 Goggles 
+      each goggle in goggles
+        hr
+        dt
+          a(href=goggle.url) #{goggle.name} 
+        dd= goggle.description 
+        | $#{goggle.cost}
+
+    else 
+      hr
+      dt No goggles found :/

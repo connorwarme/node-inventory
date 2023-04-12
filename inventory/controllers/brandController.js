@@ -1,4 +1,6 @@
 const Brand = require("../models/brand")
+const Goggle = require("../models/goggle")
+const async = require("async")
 
 // display all brands
 exports.brand_list = (req, res, next) => {
@@ -16,8 +18,35 @@ exports.brand_list = (req, res, next) => {
 }
 
 // display detail page for specific brand
-exports.brand_detail = (req, res) => {
-  res.send(`Not Implemented Yet: brand detail: ${req.params.id}`);
+exports.brand_detail = (req, res, next) => {
+  async.parallel(
+    {
+      brand(callback) {
+        Brand.findById(req.params.id).exec(callback)
+      },
+      goggle(callback) {
+        Goggle.find({ brand: req.params.id })
+          .populate("category")
+          .populate("tag")
+          .exec(callback)
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err)
+      }
+      if (results.brand == null) {
+        const error = new Error("Brand not found!")
+        error.status = 404
+        return next(error)
+      }
+      res.render("brand_detail", {
+        title: results.brand.name,
+        brand: results.brand,
+        goggles: results.goggle,
+      })
+    }
+  )
 }
 
 // display brand create form on GET
