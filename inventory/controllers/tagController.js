@@ -1,6 +1,7 @@
 const Tag = require("../models/tag")
 const Goggle = require("../models/goggle")
 const async = require("async")
+const { body, validationResult } = require("express-validator")
 
 // display all tags
 exports.tag_list = (req, res, next) => {
@@ -49,14 +50,68 @@ exports.tag_detail = (req, res, next) => {
 }
 
 // display tag create form on GET
-exports.tag_create_get = (req, res) => {
-  res.send("Not Implemented Yet: tag create GET");
+exports.tag_create_get = (req, res, next) => {
+  res.render("tag_form", { title: "Create Tag" })
 }
 
 // handle tag create on POST
-exports.tag_create_post = (req, res) => {
-  res.send("Not Implemented Yet: tag create POST");
-}
+exports.tag_create_post = [
+  // validate and sanitize name field
+  body("name", "Tag name required")
+    .trim()
+    .isLength({ min: 1 })
+    // .customSanitizer((value, { req } ) => {
+    //   let array = value.split(' ')
+    //   let newVal = ''
+    //   for (i=0; i<array.length; i++) {
+    //     let word = array[i]
+    //     let value = word.charAt(0).toUpperCase() + word.slice(1)
+    //     newVal += value
+    //     if (i != array.length-1) {
+    //       newVal += ' '
+    //     }
+    //   }
+    // })
+    .escape(),
+  // process request
+  (req, res, next) => {
+    // extract validation errors from the request
+    const errors = validationResult(req)
+    // create tag object w/ escaped and trimmed data
+    const tag = new Tag({ name: req.body.name })
+
+    // if errors, render form again w/ user input and error msgs
+    if (!errors.isEmpty()) {
+      res.render("tag_form", {
+        title: "Create Tag",
+        tag, 
+        errors: errors.array(),
+      })
+      return;
+    } else {
+      // no errors - data is valid. check if tag already exists
+      Tag.findOne({ name: req.body.name })
+        .exec((err, found_tag) => {
+          if (err) {
+            return next(err)
+          }
+          if (found_tag) {
+            // tag already exists - redirect
+            res.redirect(found_tag.url)
+          } else {
+            tag.save((err) => {
+              if (err) {
+                return next(err)
+              }
+              // new tag saved - redirect to it
+              res.redirect(tag.url)
+            })
+          }
+        })
+    }
+  }
+]
+
 
 // display tag delete form on GET
 exports.tag_delete_get = (req, res) => {

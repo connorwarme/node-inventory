@@ -29,3 +29,7 @@ hr {
 .category_detail hr {
   width: 100%;
 }
+.err-list > li {
+  width: fit-content;
+  border-bottom: 2px solid red;
+}
