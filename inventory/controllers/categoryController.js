@@ -1,7 +1,7 @@
 const Category = require("../models/category")
 const Goggle = require("../models/goggle")
-
 const async = require("async")
+const { body, validationResult } = require("express-validator")
 
 // display all categories
 exports.category_list = (req, res, next) => {
@@ -52,13 +52,49 @@ exports.category_detail = (req, res, next) => {
 
 // display category create form on GET
 exports.category_create_get = (req, res) => {
-  res.send("Not Implemented Yet: category create GET");
+  res.render("category_form", { title: "Create Category" })
 }
 
 // handle category create on POST
-exports.category_create_post = (req, res) => {
-  res.send("Not Implemented Yet: category create POST");
-}
+exports.category_create_post = [
+  body("title")
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage("Category name must be specified"),
+
+  (req, res, next) => {
+    const errors = validationResult(req)
+    const category = new Category({ title: req.body.title })
+
+    if (!errors.isEmpty()) {
+      res.render("category_form", {
+        title: "Create Category",
+        category,
+        errors: errors.array(),
+      })
+      return;
+    } else {
+      Category.findOne({ title: req.body.title })
+        .exec((err, found_category) => {
+          if (err) {
+            return next(err)
+          }
+          if (found_category) {
+            res.redirect(found_category.url)
+          } else {
+            category.save((err) => {
+              if (err) {
+                return next(err)
+              }
+              res.redirect(category.url)
+            })
+          }
+        })
+    }
+
+  }
+]
 
 // display category delete form on GET
 exports.category_delete_get = (req, res) => {

@@ -69,26 +69,27 @@ exports.brand_create_post = [
     if (!errors.isEmpty()) {
       res.render("brand_form", {
         title: "Create Brand",
-        brand: req.body,
+        brand,
         errors: errors.array(),
       })
       return;
-    } else {
-      Brand.find({ name: req.body.name })
-        .exec(err, found_brand)
-      if (err) {
-        return next(err)
-      }
-      if (found_brand) {
-        res.redirect(found_brand.url)
-      } else {
-        brand.save((err) => {
+    } else { 
+      Brand.findOne({ name: req.body.name })
+        .exec((err, found_brand) => {
           if (err) {
             return next(err)
           }
-          res.redirect(brand.url)
+          if (found_brand) {
+            res.redirect(found_brand.url)
+          } else {
+            brand.save((err) => {
+              if (err) {
+                return next(err)
+              }
+              res.redirect(brand.url)
+            })
+          }
         })
-      }
     }
   }
 ]
