@@ -1,4 +1,7 @@
 const Category = require("../models/category")
+const Goggle = require("../models/goggle")
+
+const async = require("async")
 
 // display all categories
 exports.category_list = (req, res, next) => {
@@ -16,8 +19,35 @@ exports.category_list = (req, res, next) => {
 }
 
 // display detail page for specific category
-exports.category_detail = (req, res) => {
-  res.send(`Not Implemented Yet: category detail: ${req.params.id}`);
+exports.category_detail = (req, res, next) => {
+  async.parallel(
+    {
+      category(callback) {
+        Category.findById(req.params.id).exec(callback)
+      },
+      goggle(callback) {
+        Goggle.find({ "category": req.params.id })
+          .sort({ name: 1 })
+          .populate("brand")
+          .exec(callback)
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err)
+      }
+      if (results.category == null) {
+        const error = new Error("Category not found!")
+        error.status = 404
+        return next(err)
+      }
+      res.render("category_detail", {
+        title: results.category.title,
+        category: results.category,
+        goggle_list: results.goggle,
+      })
+    }
+  )
 }
 
 // display category create form on GET

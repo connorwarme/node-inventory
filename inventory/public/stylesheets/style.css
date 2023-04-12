@@ -26,3 +26,6 @@ hr {
 .detail_instance_list > dd {
   margin: 0 0 0 40px;
 }
+.category_detail hr {
+  width: 100%;
+}
