@@ -119,27 +119,27 @@ router.get("/tags", tag_controller.tag_list)
 // GOGGLEINSTANCE routes
 
 // GET request for create instance
-router.get("/goggleinstance/create", goggleinstance_controller.goggleinstance_create_get)
+router.get("/goggles/create", goggleinstance_controller.goggleinstance_create_get)
 
 // POST request for create instance
-router.post("/goggleinstance/create", goggleinstance_controller.goggleinstance_create_post)
+router.post("/goggles/create", goggleinstance_controller.goggleinstance_create_post)
 
 // GET request for delete instance
-router.get("/goggleinstance/:id/delete", goggleinstance_controller.goggleinstance_delete_get)
+router.get("/goggles/:id/delete", goggleinstance_controller.goggleinstance_delete_get)
 
 // POST request for delete instance
-router.post("/goggleinstance/:id/delete", goggleinstance_controller.goggleinstance_delete_post)
+router.post("/goggles/:id/delete", goggleinstance_controller.goggleinstance_delete_post)
 
 // GET request for update instance
-router.get("/goggleinstance/:id/update", goggleinstance_controller.goggleinstance_update_get)
+router.get("/goggles/:id/update", goggleinstance_controller.goggleinstance_update_get)
 
 // POST request for update instance
-router.post("/goggleinstance/:id/update", goggleinstance_controller.goggleinstance_update_post)
+router.post("/goggles/:id/update", goggleinstance_controller.goggleinstance_update_post)
 
 // GET request for specific instance
-router.get("/goggleinstance/:id", goggleinstance_controller.goggleinstance_detail)
+router.get("/goggles/:id", goggleinstance_controller.goggleinstance_detail)
 
 // GET request for instance list
-router.get("/goggleinstances", goggleinstance_controller.goggleinstance_list)
+router.get("/goggleslist", goggleinstance_controller.goggleinstance_list)
 
 module.exports = router;
