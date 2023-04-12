@@ -1,4 +1,6 @@
 const GoggleInstance = require("../models/goggleinstance")
+const Goggle = require("../models/goggle")
+const async = require("async")
 
 // display all goggleinstances
 exports.goggleinstance_list = (req, res, next) => {
@@ -17,8 +19,48 @@ exports.goggleinstance_list = (req, res, next) => {
 }
 
 // display detail page for specific goggleinstance
-exports.goggleinstance_detail = (req, res) => {
-  res.send(`Not Implemented Yet: goggleinstance detail: ${req.params.id}`);
+exports.goggleinstance_detail = (req, res, next) => {
+  const instance = []
+  async.waterfall(
+    [
+      function instance(callback) {
+        GoggleInstance.findById(req.params.id)
+          .populate("goggle")
+          .exec(callback)
+      },
+      function goggle(results, callback) {
+        instance.push(results)
+        Goggle.findById(results.goggle._id)
+          .populate("brand")
+          .populate("category")
+          .populate("tag")
+          .exec(callback)
+      }
+    ],
+    function (err, results) {
+      if (err) {
+        return next(err)
+      }
+      console.log(results)
+      if (instance[0] == null) {
+        const error = new Error("Specific goggle + lens not found!")
+        error.status = 404
+        return next(error)
+      }
+      else if (results == null) {
+        console.log('houston, we have a problem here')
+        const error = new Error("Unable to access goggle details!")
+        error.status = 404
+        return next(error)
+      }
+      console.log(results.instance)
+      res.render("goggleinstance_detail", {
+        title: `${results.name} + ${instance[0].lens.style}`,
+        instance: instance[0],
+        goggle: results,
+      })
+    }
+  )
 }
 
 // display goggleinstance create form on GET
