@@ -3,9 +3,10 @@ extends layout
 block content 
   h1= title 
 
-  ul 
+  ul(style='list-style: circle; padding-left: 25px;')
+    - category_list.sort(function(a, b) {let catA = a.order; let catB = b.order; return (catA < catB) ? -1 : (catA > catB) ? 1 : 0;});
     each category in category_list 
-      li 
+      li(style='font-size: 18px; margin: 10px 0;') 
         a(href=category.url) #{category.title} 
     
     else 
