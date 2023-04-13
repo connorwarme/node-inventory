@@ -6,6 +6,10 @@ const CategorySchema = new Schema({
     type: String,
     maxLength: 100,
     required: true,
+  }, 
+  order: {
+    type: Number,
+    default: 100,
   }
 })
 
