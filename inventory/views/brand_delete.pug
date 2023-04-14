@@ -1,0 +1,28 @@
+extends layout 
+
+block content 
+  h1 #{title}: #{brand.name} 
+  
+  if goggles.length 
+
+    p #[strong Delete the following goggles before attempting to delete this brand.] 
+    
+      div(style='margin: 20px 0 0 20px;')
+
+        h4 Goggles 
+        
+        dl 
+        each goggle in goggles 
+          dt 
+            a(href=goggle.url) #{goggle.title} 
+          dd #{goggle.description} 
+  
+  else 
+    p Do you really want to delete #{brand.name} from the database?
+
+    form(method='POST' action='') 
+      div.form-group 
+        input#brandid.form-control(type='hidden' name='brandid' required='true', value=brand._id )
+      button.btn.btn-primary(type='submit') Confirm Delete
+
+

@@ -95,13 +95,63 @@ exports.brand_create_post = [
 ]
 
 // display brand delete form on GET
-exports.brand_delete_get = (req, res) => {
-  res.send("Not Implemented Yet: brand delete GET");
+exports.brand_delete_get = (req, res, next) => {
+  async.parallel(
+    {
+      brand(callback) {
+        Brand.findById(req.params.id).exec(callback)
+      },
+      brand_goggles(callback) {
+        Goggle.find({ brand: req.params.id }).exec(callback)
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err)
+      }
+      if (results.brand == null) {
+        res.redirect("/catalog/brands")
+      }
+      res.render("brand_delete", {
+        title: "Delete Brand",
+        brand: results.brand,
+        goggles: results.brand_goggles,
+      })
+    }
+  )
 }
 
 // handle brand delete on POST
-exports.brand_delete_post = (req, res) => {
-  res.send("Not Implemented Yet: brand delete POST");
+exports.brand_delete_post = (req, res, next) => {
+  async.parallel(
+    {
+      brand(callback) {
+        Brand.findById(req.body.brandid).exec(callback)
+      },
+      brand_goggles(callback) {
+        Goggle.find({ brand: req.body.brandid }).exec(callback)
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err)
+      }
+      if (results.brand_goggles.length > 0) {
+        res.render("brand_delete", {
+          title: "Delete Brand",
+          brand: results.brand,
+          goggles: results.brand_goggles,
+        })
+        return;
+      }
+      Brand.findByIdAndDelete(req.body.brandid, (err) => {
+        if (err) {
+          return next(err)
+        }
+        res.redirect("/catalog/brands")
+      })
+    }
+  )
 }
 
 // display brand update form on GET
