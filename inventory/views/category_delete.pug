@@ -1,0 +1,31 @@
+extends layout 
+
+block content 
+  h1 #{title}: #{category.title}
+
+  if goggles.length 
+    p #[strong Delete the following goggles before attempting to delete this category.] 
+
+      div(style='margin:20px 0 0 20px')
+
+        h4 Goggles 
+
+        dl 
+        each goggle in goggles 
+          dt 
+            a(href=goggle.url) #{goggle.name} 
+          dd= goggle.description 
+
+  else 
+    p Do you really want to delete 
+      a(href='category.url') #{category.title} 
+      | from the database? 
+
+    form(method='POST' action='')
+      div.form-group 
+        input#categoryid.form-control(type='hidden' name='categoryid' required='true' value=category._id )
+      button.btn.btn-primary(type='submit') Confirm Delete  
+
+  hr
+  p 
+    a(href=category.url+'/delete') Delete #{category.name}

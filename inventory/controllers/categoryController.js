@@ -97,13 +97,63 @@ exports.category_create_post = [
 ]
 
 // display category delete form on GET
-exports.category_delete_get = (req, res) => {
-  res.send("Not Implemented Yet: category delete GET");
+exports.category_delete_get = (req, res, next) => {
+  async.parallel(
+    {
+      category(callback) {
+        Category.findById(req.params.id).exec(callback)
+      },
+      goggles(callback) {
+        Goggle.find({ category: req.params.id }).exec(callback)
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err)
+      }
+      if (results.category == null) {
+        res.redirect("/catalog/categories")
+      }
+      res.render("category_delete", {
+        title: "Delete Category",
+        category: results.category,
+        goggles: results.goggles,
+      })
+    }
+  )
 }
 
 // handle category delete on POST
-exports.category_delete_post = (req, res) => {
-  res.send("Not Implemented Yet: category delete POST");
+exports.category_delete_post = (req, res, next) => {
+  async.parallel(
+    {
+      category(callback) {
+        Category.findById(req.body.categoryid).exec(callback)
+      },
+      goggles(callback) {
+        Goggle.find({ category: req.body.categoryid }).exec(callback)
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err)
+      }
+      if (results.goggles.length > 0) {
+        res.render("category_delete", {
+          title: "Delete Category",
+          category: results.category,
+          goggles: results.goggles,
+        })
+        return;
+      }
+      Category.findByIdAndDelete(req.body.categoryid, (err) => {
+        if (err) {
+          return next(err)
+        }
+        res.redirect("/catalog/categories")
+      })
+    }
+  )
 }
 
 // display category update form on GET
