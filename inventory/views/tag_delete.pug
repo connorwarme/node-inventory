@@ -1,11 +1,11 @@
 extends layout 
 
 block content 
-  h1 #{title}: #{brand.name} 
+  h1 #{title} 
   
   if goggles.length 
 
-    p #[strong Delete the following goggles before attempting to delete this brand.] 
+    p #[strong Delete the following goggles before attempting to delete this tag.] 
     
       div(style='margin: 20px 0 0 20px;')
 
@@ -18,11 +18,11 @@ block content
           dd #{goggle.description} 
   
   else 
-    p Do you really want to delete #{brand.name} from the database?
+    p Do you really want to delete #{tag.name} from the database?
 
     form(method='POST' action='') 
       div.form-group 
-        input#brandid.form-control(type='hidden' name='brandid' required='true', value=brand._id )
+        input#tagid.form-control(type='hidden' name='tagid' required='true', value=tag._id )
       button.btn.btn-primary(type='submit') Confirm Delete
 
 

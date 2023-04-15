@@ -114,13 +114,63 @@ exports.tag_create_post = [
 
 
 // display tag delete form on GET
-exports.tag_delete_get = (req, res) => {
-  res.send("Not Implemented Yet: tag delete GET");
+exports.tag_delete_get = (req, res, next) => {
+  async.parallel(
+    {
+      tag(callback) {
+        Tag.findById(req.params.id).exec(callback)
+      },
+      goggles(callback) {
+        Goggle.find({ tag: req.params.id }).exec(callback)
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err)
+      }
+      if (results.tag == null) {
+        res.redirect("/catalog/tags")
+      }
+      res.render("tag_delete", {
+        title: "Delete Tag: " + results.tag.name,
+        tag: results.tag,
+        goggles: results.goggles,
+      })
+    }
+  )
 }
 
 // handle tag delete on POST
-exports.tag_delete_post = (req, res) => {
-  res.send("Not Implemented Yet: tag delete POST");
+exports.tag_delete_post = (req, res, next) => {
+  async.parallel(
+    {
+      tag(callback) {
+        Tag.findById(req.body.tagid).exec(callback)
+      },
+      goggles(callback) {
+        Goggle.find({ tag: req.body.tagid }).exec(callback)
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err)
+      }
+      if (results.goggles.length > 0) {
+        res.render("tag_delete", {
+          title: "Delete Tag: " + results.tag.name,
+          tag: results.tag,
+          goggles: results.goggles,
+        })
+        return;
+      }
+      Tag.findByIdAndDelete(req.body.tagid, (err) => {
+        if (err) {
+          return next(err)
+        }
+        res.redirect("/catalog/tags")
+      })
+    }
+  )
 }
 
 // display tag update form on GET
