@@ -3,4 +3,33 @@ extends layout
 block content 
   h1= title 
 
-  
+  form(method='POST' action='')
+    div.form-group 
+      label(for='goggle')
+      select#goggle.form-control(type='select' placeholder='Select goggle' name='goggle' required='true')
+        - goggle_list.sort(function(a, b) {let goggleA = a.name.toUpperCase(); let goggleB = b.name.toUpperCase(); return (goggleA < goggleB) ? -1 : (goggleA > goggleB) ? 1 : 0;});
+
+        for goggle in goggle_list   
+          if selected_goggle
+            option(value=selected_goggle._id selected=(goggle._id.toString()===selected_goggle._id.toString() ? 'selected' : false) ) #{goggle.name}
+          else 
+            option(value=goggle._id) #{goggle.name}
+    div.form-group 
+      label(for='style') Lens style:
+      input#style.form-control(type='text' placeholder="Lens color" name='style' required='true' value=(undefined===instance ? '' : instance.lens.style) ) 
+    div.form-group 
+      label(for='detail') Lens details:
+      input#detail.form-control(type='text' placeholder="Optimal in ..." name='detail' required='true' value=(undefined===instance ? '' : instance.lens.detail) )
+    div.form-group 
+      label(for='quantity') Quantity:
+      input#quantity.form-control(type='number' placeholder=0 min=0 max=100 name='quantity' required='true' value=(undefined===instance ? '' : instance.quantity) ) 
+    button.btn.btn-primary(type='submit') Submit 
+
+  br
+ 
+  if errors 
+    hr
+    br
+    ul.err-list 
+      for error in errors 
+        li  #{error.msg}!

@@ -83,11 +83,11 @@ exports.goggleinstance_create_post = [
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("lens.style", "Goggle lens style must be declared")
+  body("style", "Goggle lens style must be declared")
     .trim()
     .isLength({ min: 1 })
     .escape(),
-  body("lens.detail", "Goggle lens details required")
+  body("detail", "Goggle lens details required")
     .trim()
     .isLength({ min: 1 })
     .escape(),
@@ -104,8 +104,8 @@ exports.goggleinstance_create_post = [
     const goggleinstance = new GoggleInstance({
       goggle: req.body.goggle,
       lens: {
-        style: req.body.lens.style,
-        detail: req.body.lens.detail,
+        style: req.body.style,
+        detail: req.body.detail,
       },
       quantity: req.body.quantity,
     })
@@ -120,7 +120,7 @@ exports.goggleinstance_create_post = [
           goggle_list: goggles,
           selected_goggle: goggleinstance.goggle._id,
           errors: errors.array(),
-          goggleinstance,
+          instance: goggleinstance,
         })
       })
       return;
