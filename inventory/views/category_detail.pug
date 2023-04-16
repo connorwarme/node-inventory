@@ -3,17 +3,20 @@ extends layout
 block content 
   h1 Category: #{title}
 
-  dl.category_detail
-    hr 
+  dl.category_detail 
 
     each goggle in goggle_list 
+      hr
       dt 
         a(href=goggle.url) #{goggle.name} 
         | // #{goggle.brand.name}
       dd= goggle.description 
       | $#{goggle.cost}
 
-      hr 
     
     else 
       dt There are no goggles in this category.
+
+  hr
+  p 
+    a(href=category.url+'/delete') Delete #{category.title}
