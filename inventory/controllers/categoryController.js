@@ -194,7 +194,7 @@ exports.category_update_post = [
       })
       return;
     }
-    Category.findByIdAndUpdate(req.params.id, category, (err, results) => {
+    Category.findByIdAndUpdate(req.params.id, category, (err) => {
       if (err) {
         return next(err)
       }

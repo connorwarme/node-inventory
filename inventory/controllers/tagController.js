@@ -174,11 +174,49 @@ exports.tag_delete_post = (req, res, next) => {
 }
 
 // display tag update form on GET
-exports.tag_update_get = (req, res) => {
-  res.send("Not Implemented Yet: tag update GET");
+exports.tag_update_get = (req, res, next) => {
+  Tag.findById(req.params.id).exec(function(err, results) {
+    if (err) {
+      return next(err)
+    }
+    if (results == null) {
+      const error = new Error("Tag not found in the database")
+      error.status = 404
+      return next(error)
+    }
+    res.render("tag_form", {
+      title: "Update Tag",
+      tag: results,
+    })
+  })
 }
 
 // handle tag update on POST
-exports.tag_update_post = (req, res) => {
-  res.send("Not Implemented Yet: tag update POST");
-}
+exports.tag_update_post = [
+  body("tag", "Tag name must be specified")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  (req, res, next) => {
+    const errors = validationResult(req)
+    const tag = new Tag({
+      name: req.body.name,
+      _id: req.params.id,
+    })
+    if (!errors.isEmpty()) {
+      res.render("tag_form", {
+        title: "Update Tag",
+        tag,
+        errors: errors.array(),
+      })
+      return;
+    } else {
+      Tag.findByIdAndUpdate(req.params.id, tag, (err) => {
+        if (err) {
+          return next(err)
+        }
+        res.redirect(tag.url)
+      })
+    }
+  }
+]
