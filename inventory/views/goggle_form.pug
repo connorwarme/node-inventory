@@ -14,7 +14,7 @@ block content
 
         for brand in brands   
           if goggle
-            option(value=goggle._id selected=(brand._id.toString()===goggle.brand._id.toString() ? 'selected' : false) ) #{brand.name}
+            option(value=brand._id selected=(brand._id.toString()===goggle.brand._id.toString() ? 'selected' : false) ) #{brand.name}
           else 
             option(value=brand._id) #{brand.name}
     div.form-group 
@@ -27,7 +27,7 @@ block content
 
         for category in categories   
           if goggle
-            option(value=goggle._id selected=(category._id.toString()===goggle.category._id.toString() ? 'selected' : false) ) #{category.title}
+            option(value=category._id selected=(category._id.toString()===goggle.category._id.toString() ? 'selected' : false) ) #{category.title}
           else 
             option(value=category._id) #{category.title}
     div.form-group 
