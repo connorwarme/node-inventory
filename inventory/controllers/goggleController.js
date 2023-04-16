@@ -197,13 +197,65 @@ exports.goggle_create_post = [
   }
 ]
 // display goggle delete form on GET
-exports.goggle_delete_get = (req, res) => {
-  res.send("Not Implemented Yet: goggle delete GET");
+exports.goggle_delete_get = (req, res, next) => {
+  async.parallel(
+    {
+      goggle(callback) {
+        Goggle.findById(req.params.id).exec(callback)
+      },
+      lenses(callback) {
+        GoggleInstance.find({ goggle: req.params.id }).exec(callback)
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err)
+      }
+      if (results.goggle == null) {
+        res.redirect("/catalog/goggles")
+      }
+      res.render("goggle_delete", {
+        title: "Delete Goggle: " + results.goggle.name,
+        goggle: results.goggle,
+        lenses: results.lenses,
+      })
+    }
+  )
 }
 
 // handle goggle delete on POST
-exports.goggle_delete_post = (req, res) => {
-  res.send("Not Implemented Yet: goggle delete POST");
+exports.goggle_delete_post = (req, res, next) => {
+  async.parallel(
+    {
+      goggle(callback) {
+        Goggle.findById(req.body.goggleid).exec(callback)
+      },
+      lenses(callback) {
+        GoggleInstance.find({ goggle: req.body.goggleid }).exec(callback)
+      },
+    },
+    (err, results) => {
+      console.log(results.lenses)
+      if (err) {
+        return next(err)
+      }
+      if (results.lenses.length > 0) {
+        res.render("goggle_delete", {
+          title: "Delete Goggle: " + results.goggle.name,
+          goggle: results.goggle,
+          lenses: results.lenses,
+        })
+        return;
+      }
+      Goggle.findByIdAndDelete(req.body.goggleid, (err) => {
+        if (err) {
+          console.log('here is the error dumbass')
+          return next(err)
+        }
+        res.redirect("/catalog/goggles")
+      })
+    }
+  )
 }
 
 // display goggle update form on GET

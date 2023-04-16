@@ -1,0 +1,29 @@
+extends layout 
+
+block content 
+  h1= title 
+
+  if lenses.length 
+    p Delete the following goggle + lens combos before attempting to delete this goggle model.
+
+    div(style='margin: 20px 0 0 20px')
+      h4 Goggle + Lens Combos 
+
+      dl
+      each lens in lenses 
+        dt 
+          a(href=lens.url) #{lens.lens.style} 
+        dd #{lens.lens.detail} 
+  else 
+    p Are you sure you want to delete 
+      a(href=goggle.url) #{goggle.name} 
+      | from the database? 
+    
+    form(method='POST' action='') 
+      div.form-group
+        input#goggleid.form-control(type='hidden' name='goggleid' required='true' value=goggle._id )
+      button.btn.btn-primary(type='submit') Confirm Delete
+
+
+
+        
