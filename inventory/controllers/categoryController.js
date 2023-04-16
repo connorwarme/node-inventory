@@ -157,11 +157,48 @@ exports.category_delete_post = (req, res, next) => {
 }
 
 // display category update form on GET
-exports.category_update_get = (req, res) => {
-  res.send("Not Implemented Yet: category update GET");
+exports.category_update_get = (req, res, next) => {
+  Category.findById(req.params.id).exec(function(err, results) {
+    if (err) {
+      return next(err)
+    }
+    if (results == null) {
+      const error = new Error("Category not found in database")
+      error.status = 404
+      return next(error)
+    }
+    res.render("category_form", {
+      title: "Update Category",
+      category: results,
+    })
+  })
 }
 
 // handle category update on POST
-exports.category_update_post = (req, res) => {
-  res.send("Not Implemented Yet: category update POST");
-}
+exports.category_update_post = [
+  body("title", "Category name must be specified")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  (req, res, next) => {
+    const errors = validationResult(req)
+    const category = new Category({
+      title: req.body.title,
+      _id: req.params.id,
+    })
+    if (!errors.isEmpty()) {
+      res.render("category_form", {
+        title: "Update Category",
+        category,
+        errors: errors.array(),
+      })
+      return;
+    }
+    Category.findByIdAndUpdate(req.params.id, category, (err, results) => {
+      if (err) {
+        return next(err)
+      }
+      res.redirect(category.url)
+    })
+  }
+]
