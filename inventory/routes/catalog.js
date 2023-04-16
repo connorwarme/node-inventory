@@ -24,7 +24,7 @@ router.post("/goggle/create", goggle_controller.goggle_create_post)
 router.get("/goggle/:id/delete", goggle_controller.goggle_delete_get)
 
 // POST request to delete goggle
-router.post("goggle/:id/delete", goggle_controller.goggle_delete_post)
+router.post("/goggle/:id/delete", goggle_controller.goggle_delete_post)
 
 // GET request to update goggle
 router.get("/goggle/:id/update", goggle_controller.goggle_update_get)
