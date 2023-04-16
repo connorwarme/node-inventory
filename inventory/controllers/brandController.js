@@ -155,11 +155,50 @@ exports.brand_delete_post = (req, res, next) => {
 }
 
 // display brand update form on GET
-exports.brand_update_get = (req, res) => {
-  res.send("Not Implemented Yet: brand update GET");
+exports.brand_update_get = (req, res, next) => {
+  Brand.findById(req.params.id).exec(function(err, results) {
+    if (err) {
+      return next(err)
+    }
+    if (results == null) {
+      const error = new Error("Brand not found in database")
+      error.status = 404
+      return next(error)
+    }
+    res.render("brand_form", {
+      title: "Update Brand",
+      brand: results,
+    })
+  })
 }
 
 // handle brand update on POST
-exports.brand_update_post = (req, res) => {
-  res.send("Not Implemented Yet: brand update POST");
-}
+exports.brand_update_post = [
+  body("name")
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage("Brand name must be specified"),
+  (req, res, next) => {
+    const errors = validationResult(req)
+    const brand = new Brand({ 
+      name: req.body.name,
+      _id: req.params.id, 
+    })
+    if (!errors.isEmpty()) {
+      res.render("brand_form", {
+        title: "Create Brand",
+        brand,
+        errors: errors.array(),
+      })
+      return;
+    } else { 
+      Brand.findByIdAndUpdate(req.params.id, brand, (err) => {
+        if (err) {
+          return next(err)
+        }
+        res.redirect(brand.url)
+      })
+    }
+  }
+]
