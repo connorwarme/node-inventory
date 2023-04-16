@@ -135,13 +135,28 @@ exports.goggleinstance_create_post = [
 ]
 
 // display goggleinstance delete form on GET
-exports.goggleinstance_delete_get = (req, res) => {
-  res.send("Not Implemented Yet: goggleinstance delete GET");
+exports.goggleinstance_delete_get = (req, res, next) => {
+  GoggleInstance.findById(req.params.id)
+    .populate("goggle")
+    .exec((err, goggle_lens) => {
+    if (err) {
+      return next(err)
+    }
+    res.render("goggleinstance_delete", {
+      title: "Delete Goggle + Lens Combo",
+      lens: goggle_lens,
+    })
+  })
 }
 
 // handle goggleinstance delete on POST
-exports.goggleinstance_delete_post = (req, res) => {
-  res.send("Not Implemented Yet: goggleinstance delete POST");
+exports.goggleinstance_delete_post = (req, res, next) => {
+  GoggleInstance.findByIdAndDelete(req.body.instanceid).exec((err) => {
+    if (err) {
+      return next(err)
+    }
+    res.redirect("/catalog/goggleslist")
+  })
 }
 
 // display goggleinstance update form on GET

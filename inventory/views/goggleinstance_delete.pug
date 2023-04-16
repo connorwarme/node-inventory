@@ -1,0 +1,11 @@
+extends layout 
+
+block content 
+  h1= title 
+
+  p Are you sure you want to delete #{lens.goggle.name} + #{lens.lens.style} from the database? 
+
+  form(method='POST' action='')
+    div.form-group 
+      input#instanceid.form-control(type='hidden' name='instanceid' required='true' value=lens._id )
+    button.btn.btn-primary(type='submit') Confirm Delete
