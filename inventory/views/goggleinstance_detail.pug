@@ -22,7 +22,10 @@ block content
         a(href=tag.url) #{tag.name}
   else 
     p
-
+    
+  hr
+  p 
+    a(href=instance.url+'/update') Update #{goggle.name} + #{instance.lens.style}
   hr
   p 
     a(href=instance.url+'/delete') Delete #{goggle.name} + #{instance.lens.style}
